@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PersonService } from '../../../api/person.service';
 
 @Component({
 	selector: 'person-get-all',
@@ -9,5 +10,20 @@ import { Component } from '@angular/core';
 })
 
 export class PersonGetAllComponent {
+	listPerson: any[] = [];
 
+	constructor(
+		private personService: PersonService
+	) { }
+
+	ngOnInit() {
+		this.personService.getAll().subscribe({
+			next: (response: any[]) => {
+				this.listPerson = response;
+			},
+			error: (error: any) => {
+				console.log(error);
+			}
+		});
+	}
 }

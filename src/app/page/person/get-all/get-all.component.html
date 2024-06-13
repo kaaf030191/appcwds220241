@@ -15,7 +15,18 @@
 						<th class="text-end"></th>
 					</tr>
 				</thead>
-				<tbody></tbody>
+				<tbody>
+					@for(item of listPerson; track $index) {
+						<tr>
+							<td>{{item.firstName}}</td>
+							<td>{{item.surName}}</td>
+							<td class="text-center">{{item.dni}}</td>
+							<td class="text-center">{{item.gender ? 'Masculino' : 'Femenino'}}</td>
+							<td class="text-center">{{item.birthDate}}</td>
+							<td></td>
+						</tr>
+					}
+				</tbody>
 			</table>
 		</div>
 	</div>
