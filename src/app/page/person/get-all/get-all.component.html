@@ -21,11 +21,11 @@
 							<td>{{item.firstName}}</td>
 							<td>{{item.surName}}</td>
 							<td class="text-center">{{item.dni}}</td>
-							<td class="text-center">{{item.gender ? 'Masculino' : 'Femenino'}}</td>
+							<td class="text-center">{{item.gender == 'true' ? 'Masculino' : 'Femenino'}}</td>
 							<td class="text-center">{{item.birthDate | date:'dd-MM-yyyy'}}</td>
 							<td>
 								<button class="btn btn-sm btn-danger" (click)="delete(item.idPerson, $index)">Eliminar</button>
-								<button class="btn btn-sm btn-secondary" (click)="showModal(modaEditPerson, item)">Editar</button>
+								<button class="btn btn-sm btn-secondary" (click)="showModal(modaEditPerson, $index)">Editar</button>
 							</td>
 						</tr>
 					}
@@ -80,6 +80,6 @@
 	<hr>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar modal</button>
-		<button class="btn btn-primary" (click)="onClickSaveChanges()">Registrar datos ingresados</button>
+		<button class="btn btn-primary" (click)="onClickSaveChanges()">Guardar cambios</button>
 	</div>
 </ng-template>
