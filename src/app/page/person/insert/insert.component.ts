@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
 import { PersonService } from '../../../api/person.service';
 
 @Component({
@@ -27,15 +27,22 @@ export class PersonInsertComponent {
 		private personService: PersonService
 	) {
 		this.frmInsertPerson = this.formBuilder.group({
-			firstName: [null, []],
-			surName: [null, []],
-			dni: [null, []],
-			gender: [null, []],
-			birthDate: [null, []]
+			firstName: [null, [Validators.required]],
+			surName: [null, [Validators.required]],
+			dni: [null, [Validators.required, Validators.pattern(/^([0-9]{8})?$/)]],
+			gender: [null, [Validators.required]],
+			birthDate: [null, [Validators.required]]
 		});
 	}
 
 	onClickBtnSubmit(): void {
+		if(!this.frmInsertPerson.valid) {
+			this.frmInsertPerson.markAllAsTouched();
+			this.frmInsertPerson.markAsDirty();
+
+			return;
+		}
+
 		let formData: FormData = new FormData();
 
 		formData.append('firstName', this.firstNameFb.value);
