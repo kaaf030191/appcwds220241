@@ -27,11 +27,11 @@ export class PersonInsertComponent {
 		private personService: PersonService
 	) {
 		this.frmInsertPerson = this.formBuilder.group({
-			firstName: [null, [Validators.required]],
-			surName: [null, [Validators.required]],
-			dni: [null, [Validators.required, Validators.pattern(/^([0-9]{8})?$/)]],
-			gender: [null, [Validators.required]],
-			birthDate: [null, [Validators.required]]
+			firstName: ['', []],
+			surName: ['', [Validators.required]],
+			dni: ['', [Validators.required, Validators.pattern(/^([0-9]{8})?$/)]],
+			gender: ['', [Validators.required]],
+			birthDate: ['', [Validators.required]]
 		});
 	}
 
@@ -53,7 +53,7 @@ export class PersonInsertComponent {
 
 		this.personService.insert(formData).subscribe({
 			next: (response: any) => {
-				console.log(response);
+				
 			},
 			error: (error: any) => {
 				console.log(error);
