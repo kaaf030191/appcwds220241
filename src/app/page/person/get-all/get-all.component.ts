@@ -46,8 +46,8 @@ export class PersonGetAllComponent {
 
 	ngOnInit() {
 		this.personService.getAll().subscribe({
-			next: (response: any[]) => {
-				this.listPerson = response;
+			next: (response: any) => {
+				this.listPerson = response.dto.listPerson;
 			},
 			error: (error: any) => {
 				console.log(error);
@@ -100,7 +100,7 @@ export class PersonGetAllComponent {
 				this.listPerson[this.indexToModify].firstName = this.firstNameFb.value;
 				this.listPerson[this.indexToModify].surName = this.surNameFb.value;
 				this.listPerson[this.indexToModify].dni = this.dniFb.value;
-				this.listPerson[this.indexToModify].gender = this.genderFb.value;
+				this.listPerson[this.indexToModify].gender = this.genderFb.value == 'true';
 				this.listPerson[this.indexToModify].birthDate = this.birthDateFb.value;
 
 				this.modalService.hide();

@@ -15,8 +15,8 @@ export class PersonService {
 		return this.httpClient.post('http://localhost:8080/person/insert', formData).pipe(retry(3));
 	}
 
-	public getAll(): Observable<any[]> {
-		return this.httpClient.get<any[]>('http://localhost:8080/person/getall').pipe(retry(3));
+	public getAll(): Observable<any> {
+		return this.httpClient.get<any>('http://localhost:8080/person/getall').pipe(retry(3));
 	}
 
 	public delete(idPerson: string): Observable<any> {
