@@ -34,4 +34,8 @@ export class AppComponent {
 	changeView(route: string): void {
 		this.router.navigateByUrl(route);
 	}
+
+	closeGlobalMessage(): void {
+		document.getElementById('globalMessage')!.style.display = 'none';
+	}
 }

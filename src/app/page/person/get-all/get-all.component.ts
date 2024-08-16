@@ -3,6 +3,7 @@ import { PersonService } from '../../../api/person.service';
 import { CommonModule } from '@angular/common';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+import { HelperService } from '../../../helper/helper.service';
 
 @Component({
 	selector: 'person-get-all',
@@ -30,6 +31,7 @@ export class PersonGetAllComponent {
 	get birthDateFb(){ return this.frmEditPerson.controls['birthDate']; }
 
 	constructor(
+		private helperService: HelperService,
 		private formBuilder: FormBuilder,
 		private personService: PersonService,
 		private modalService: BsModalService
@@ -58,10 +60,34 @@ export class PersonGetAllComponent {
 	delete(idPerson: string, index: number): void {
 		this.personService.delete(idPerson).subscribe({
 			next: (response: any) => {
-				this.listPerson.splice(index, 1);
+				switch(response.type) {
+					case 'success':
+						this.helperService.showSuccessMessage(response.listMessage[0]);
+
+					break;
+
+					case 'warning':
+						this.helperService.showWarningMessage(response.listMessage);
+
+					break;
+
+					case 'error':
+						this.helperService.showErrorMessage(response.listMessage);
+
+					break;
+
+					case 'exception':
+						this.helperService.showExceptionMessage(response.listMessage);
+
+					break;
+				}
+
+				if(response.type == 'success' || response.type == 'warning') {
+					this.listPerson.splice(index, 1);
+				}
 			},
 			error: (error: any) => {
-				console.log(error);
+				this.helperService.showExceptionMessage([error]);
 			}
 		});
 	}
@@ -95,18 +121,40 @@ export class PersonGetAllComponent {
 
 		this.personService.update(formData).subscribe({
 			next: (response: any) => {
-				console.log(response);
+				switch(response.type) {
+					case 'success':
+						this.helperService.showSuccessMessage(response.listMessage[0]);
 
-				this.listPerson[this.indexToModify].firstName = this.firstNameFb.value;
-				this.listPerson[this.indexToModify].surName = this.surNameFb.value;
-				this.listPerson[this.indexToModify].dni = this.dniFb.value;
-				this.listPerson[this.indexToModify].gender = this.genderFb.value == 'true';
-				this.listPerson[this.indexToModify].birthDate = this.birthDateFb.value;
+					break;
 
-				this.modalService.hide();
+					case 'warning':
+						this.helperService.showWarningMessage(response.listMessage);
+
+					break;
+
+					case 'error':
+						this.helperService.showErrorMessage(response.listMessage);
+
+					break;
+
+					case 'exception':
+						this.helperService.showExceptionMessage(response.listMessage);
+
+					break;
+				}
+
+				if(response.type == 'success' || response.type == 'warning') {
+					this.listPerson[this.indexToModify].firstName = this.firstNameFb.value;
+					this.listPerson[this.indexToModify].surName = this.surNameFb.value;
+					this.listPerson[this.indexToModify].dni = this.dniFb.value;
+					this.listPerson[this.indexToModify].gender = this.genderFb.value == 'true';
+					this.listPerson[this.indexToModify].birthDate = this.birthDateFb.value;
+
+					this.modalService.hide();
+				}
 			},
 			error: (error: any) => {
-				console.log(error);
+				this.helperService.showExceptionMessage([error]);
 			}
 		});
 	}

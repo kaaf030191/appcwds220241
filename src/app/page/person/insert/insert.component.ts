@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
 import { PersonService } from '../../../api/person.service';
+import { HelperService } from '../../../helper/helper.service';
 
 @Component({
 	selector: 'person-insert',
@@ -23,6 +24,7 @@ export class PersonInsertComponent {
 	get birthDateFb(){ return this.frmInsertPerson.controls['birthDate']; }
 
 	constructor(
+		private helperService: HelperService,
 		private formBuilder: FormBuilder,
 		private personService: PersonService
 	) {
@@ -40,6 +42,8 @@ export class PersonInsertComponent {
 			this.frmInsertPerson.markAllAsTouched();
 			this.frmInsertPerson.markAsDirty();
 
+			this.helperService.showErrorMessage(['Complete y corrija toda la información.']);
+
 			return;
 		}
 
@@ -53,10 +57,34 @@ export class PersonInsertComponent {
 
 		this.personService.insert(formData).subscribe({
 			next: (response: any) => {
-				
+				switch(response.type) {
+					case 'success':
+						this.helperService.showSuccessMessage(response.listMessage[0]);
+
+					break;
+
+					case 'warning':
+						this.helperService.showWarningMessage(response.listMessage);
+
+					break;
+
+					case 'error':
+						this.helperService.showErrorMessage(response.listMessage);
+
+					break;
+
+					case 'exception':
+						this.helperService.showExceptionMessage(response.listMessage);
+
+					break;
+				}
+
+				if(response.type == 'success' || response.type == 'warning') {
+					this.frmInsertPerson.reset();
+				}
 			},
 			error: (error: any) => {
-				console.log(error);
+				this.helperService.showExceptionMessage([error]);
 			}
 		});
 	}
