@@ -95,4 +95,8 @@ export class HelperService {
 			document.getElementById('globalMessage')!.style.display = 'none';
 		}, 10000);
 	}
+
+	existsSession(): boolean {
+		return localStorage.getItem('idUser') != undefined && localStorage.getItem('idUser') != null && localStorage.getItem('idUser') != '';
+	}
 }

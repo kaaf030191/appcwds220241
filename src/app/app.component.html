@@ -9,12 +9,25 @@
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="#">Página principal</a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" (click)="changeView('person/insert')">Registrar datos</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" (click)="changeView('person/get-all')">Listar datos</a>
-				</li>
+				@if(helperService.existsSession()) {
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" (click)="changeView('person/insert')">Registrar datos</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" (click)="changeView('person/get-all')">Listar datos</a>
+					</li>
+				}
+			</ul>
+			<ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+				@if(helperService.existsSession()) {
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" (click)="logout()">Logout</a>
+					</li>
+				} @else {
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" (click)="changeView('user/login')">Login</a>
+					</li>
+				}
 			</ul>
 		</div>
 	</div>
